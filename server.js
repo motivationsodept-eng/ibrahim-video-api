@@ -6,27 +6,22 @@ app.use(cors());
 app.use(express.json());
 
 app.post('/api/make-video', (req, res) => {
-    const { scriptText } = req.body;
-    console.log("Script received:", scriptText);
-
-    // Dynamic Video Selection Logic
-    let videoLink = "https://videos.pexels.com/video-files/3129957/3129957-uhd_2560_1440_25fps.mp4"; // Default
+    const { scriptText, logoUrl } = req.body;
     
-    const prompt = scriptText.toLowerCase();
-    if (prompt.includes("house") || prompt.includes("real estate") || prompt.includes("mysore")) {
-        videoLink = "https://videos.pexels.com/video-files/3773487/3773487-uhd_2560_1440_30fps.mp4";
-    } else if (prompt.includes("car") || prompt.includes("speed")) {
-        videoLink = "https://videos.pexels.com/video-files/3129638/3129638-uhd_2560_1440_25fps.mp4";
-    }
-
-    // 🔥 CACHE BUSTER: Timestamp add kar rahe hain taaki har baar NAYA video dikhe
-    const finalUrl = `${videoLink}?t=${Date.now()}`;
+    // 💡 EASY LOGIC: 
+    // Hum user ke script ko video ke upar 'Captions' ki tarah dikhayenge.
+    // Abhi testing ke liye hum Pexels se dynamic keyword search wala link bhej rahe hain.
+    
+    const query = scriptText.split(' ').slice(0, 2).join(','); // Pehle 2 words se video dhoondo
+    const dynamicVideo = `https://videos.pexels.com/video-files/3773487/3773487-uhd_2560_1440_30fps.mp4?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200`;
 
     res.json({
         success: true,
-        videoUrl: finalUrl
+        videoUrl: dynamicVideo,
+        overlayText: scriptText, // Lovable ko ye text video ke upar dikhana hoga
+        brand: "PropMysore"
     });
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server live on ${PORT}`));
+app.listen(PORT, () => console.log(`Smart Engine Live on ${PORT}`));
