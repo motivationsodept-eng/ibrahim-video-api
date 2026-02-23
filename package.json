@@ -1,12 +1,24 @@
-{
-  "name": "ibrahim-video-api",
-  "version": "1.0.0",
-  "main": "server.js",
-  "scripts": {
-    "start": "node server.js"
-  },
-  "dependencies": {
-    "express": "^4.18.2",
-    "cors": "^2.8.5"
-  }
-}
+const express = require('express');
+const cors = require('cors');
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+// 🚀 ASLI VIDEO GENERATION ENDPOINT
+app.post('/api/make-video', (req, res) => {
+    const { scriptText } = req.body;
+    console.log("Processing Script:", scriptText);
+
+    // Abhi hum ek sample high-quality video bhej rahe hain testing ke liye
+    // Isse Lovable ka player chalne lagega
+    res.json({
+        success: true,
+        videoUrl: "https://videos.pexels.com/video-files/3129957/3129957-uhd_2560_1440_25fps.mp4" 
+    });
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
