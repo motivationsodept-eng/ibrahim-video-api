@@ -2,23 +2,20 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
-app.use(cors());
+app.use(cors()); // Ye Arena AI ko data lene ki permission deta hai
 app.use(express.json());
 
 app.post('/api/make-video', (req, res) => {
-    const { scriptText, logoUrl } = req.body;
-    
-    // 💡 EASY LOGIC: 
-    // Hum user ke script ko video ke upar 'Captions' ki tarah dikhayenge.
-    // Abhi testing ke liye hum Pexels se dynamic keyword search wala link bhej rahe hain.
-    
-    const query = scriptText.split(' ').slice(0, 2).join(','); // Pehle 2 words se video dhoondo
-    const dynamicVideo = `https://videos.pexels.com/video-files/3773487/3773487-uhd_2560_1440_30fps.mp4?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200`;
+    const { scriptText } = req.body;
+
+    // 💡 FIX: Hamesha direct MP4 link bhejo
+    // Pexels ka direct video link use kar rahe hain
+    const videoUrl = "https://player.vimeo.com/external/370331493.sd.mp4?s=231600c0082463e271297e68407481a50a1df7b0&profile_id=164&oauth2_token_id=57447761";
 
     res.json({
         success: true,
-        videoUrl: dynamicVideo,
-        overlayText: scriptText, // Lovable ko ye text video ke upar dikhana hoga
+        videoUrl: videoUrl,
+        overlayText: scriptText || "NexusVidio Preview",
         brand: "PropMysore"
     });
 });
